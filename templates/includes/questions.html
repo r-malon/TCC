@@ -1,0 +1,20 @@
+<table>
+	<thead>
+		<tr>
+			<th>&nbsp;</th>
+			{% for i in range(n_choices) %}
+			<th scope="col"></th>
+			{% endfor %}
+		</tr>
+	</thead>
+	<tbody>
+		{% for j in range(n_questions) %}
+		<tr>
+			<th scope="row"></th>
+			{% for k in range(n_choices) %}
+			<td></td>
+			{% endfor %}
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
