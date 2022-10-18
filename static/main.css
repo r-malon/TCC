@@ -1,3 +1,5 @@
+/* wkhtmltopdf doesn't support CSS 3 */
+/*
 @counter-style circled-upper-latin {
 	system: fixed;
 	symbols: '\24B6' '\24B7' '\24B8' '\24B9' '\24BA' '\24BB' '\24BC' '\24BD' 
@@ -5,6 +7,7 @@
 	'\24C7' '\24C8' '\24C9' '\24CA' '\24CB' '\24CC' '\24CD' '\24CE' '\24CF';
 	suffix: ' ';
 }
+*/
 @page {
 	size: A4 portrait;
 	margin: 0;
@@ -37,11 +40,11 @@ table th {
 	padding: 5px;
 }
 thead tr {
-	counter-reset: Header;
+	counter-reset: TableHeader;
 }
 thead th[scope="col"]::before {
-	counter-increment: Header;
-	content: counter(Header, upper-alpha);
+	counter-increment: TableHeader;
+	content: counter(TableHeader, upper-alpha);
 }
 tbody tr {
 	counter-reset: Choices;
@@ -61,8 +64,10 @@ tbody td {
 	background: #fff;
 	color: #303030;
 }
+/*
 tbody td::before {
 	counter-increment: Choices;
 	content: counter(Choices, circled-upper-latin);
 	font-size: 1.5em; font-weight: bold;
 }
+*/

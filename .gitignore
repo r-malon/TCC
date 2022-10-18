@@ -1,4 +1,7 @@
 __pycache__/
 *.db
+*.exe
 *.pyc
 *.pyo
+*.csv
+*.pdf

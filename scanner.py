@@ -18,7 +18,7 @@ def find_contours(img):
 	return None
 
 if __name__ == '__main__':
-	img = cv2.imread('./out/gabarito.png')
+	img = cv2.imread('out/gabarito_p.png')
 	result = img.copy()
 	gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 	blurred = cv2.GaussianBlur(gray, (3, 3), 0)
@@ -27,7 +27,7 @@ if __name__ == '__main__':
 	blurred = cv2.drawContours(blurred, find_contours(blurred), -1, (0, 255, 0))
 
 	thresh = cv2.inRange(img, (0, 0, 0), (255, 255, 255))
-	kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (15, 15))
+	kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (22, 22))
 	morph = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel)
 	morph = cv2.morphologyEx(morph, cv2.MORPH_OPEN, kernel)
 	'''
@@ -35,4 +35,4 @@ if __name__ == '__main__':
 	for i in circles[0, :]:
 		cv2.circle(blurred, (i[0], i[1]), i[2], (0, 255, 0), 2)
 	'''
-	cv2.imwrite('out/test.png', blurred)
+	cv2.imwrite('out/test.png', morph)

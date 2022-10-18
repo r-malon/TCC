@@ -1,5 +1,5 @@
 * Definir o cartão-resposta:
-	- identificação do respondente (QRCode, nome, CPF etc.)
+	- identificação do respondente (QRCode, nome, matrícula etc.)
 	- formato das respostas
 
 * Definição da tecnologia:
