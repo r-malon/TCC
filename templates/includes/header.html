@@ -1,9 +1,9 @@
-<div style="margin: 10% 0 0 5%;">
-	<img src="data:image/png;base64,{{ qr }}" width="150" height="150">
-	<div style="line-height: 0.8; display: inline-block; margin-top: -10%;">
+<div style="display: flex; align-items: center; justify-content: center;">
+	<img src="data:image/png;base64,{{ qr }}" width="140" height="140">
+	<div style="line-height: 0.8; display: inline-block;">
 		<p>{{ date }}</p>
-		<p>Name: {{ name }}</p>
-		<p>Enrollment: {{ enrollment }}</p>
-		<p>Signature: ________________________</p>
+		<p><b>Name</b>: {{ name }}</p>
+		<p><b>Enrollment</b>: {{ enrollment }}</p>
+		<p><b>Signature</b>: ________________________</p>
 	</div>
 </div>

@@ -1,20 +1,12 @@
-<table>
-	<thead>
-		<tr>
-			<th>&nbsp;</th>
-			{% for i in range(n_choices) %}
-			<th scope="col"></th>
-			{% endfor %}
-		</tr>
-	</thead>
-	<tbody>
-		{% for j in range(n_questions) %}
-		<tr>
-			<th scope="row"></th>
-			{% for k in range(n_choices) %}
-			<td>{{ choices[k] }}</td>
-			{% endfor %}
-		</tr>
+<div style="margin-left: auto; margin-right: auto;">
+<ol>
+	{% for q in questions %}
+	<li>{{ q }}</li>
+	<ol type="A">
+		{% for a in answers %}
+		<li>{{ a }}</li>
 		{% endfor %}
-	</tbody>
-</table>
+	</ol>
+	{% endfor %}
+</ol>
+</div>

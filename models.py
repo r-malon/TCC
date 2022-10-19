@@ -14,13 +14,21 @@ class BaseModel(Model):
 
 
 class Student(BaseModel):
+	enrollment = IntegerField(unique=True)
 	name = TextField()
-	enrollment = IntegerField()
 
 class Teacher(BaseModel):
 	name = TextField()
 
 class Assessment(BaseModel):
 	date = DateTimeField(default=datetime.utcnow)
-	n_choices = IntegerField()
+	n_choices = IntegerField() # for answer sheet
 	n_questions = IntegerField()
+
+class Question(BaseModel):
+	statement = TextField()
+#	interpret_html = BoolField()
+
+class Answer(BaseModel):
+	question = ForeignKeyField(Question, backref='answers')
+	statement = TextField()

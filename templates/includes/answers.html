@@ -1,0 +1,20 @@
+<table>
+	<thead>
+		<tr>
+			<th></th>
+			{% for i in range(n_choices) %}
+			<th scope="col"></th>
+			{% endfor %}
+		</tr>
+	</thead>
+	<tbody>
+		{% for j in range(n_questions) %}
+		<tr>
+			<th scope="row"></th>
+			{% for k in range(n_choices) %}
+			<td>{#<span class="choice">{{ choices[k] }}</span>#}</td>
+			{% endfor %}
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
