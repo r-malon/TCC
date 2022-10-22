@@ -1,5 +1,5 @@
 import sys, argparse
-
+'''
 parser = argparse.ArgumentParser(description='Corretor.')
 parser.add_argument('infile', help='Arquivo de entrada')
 parser.add_argument('outfile', help='Arquivo de saída')
@@ -13,3 +13,4 @@ args = parser.parse_args()
 
 if args.deduplicate:
 	args.optimize = True
+'''

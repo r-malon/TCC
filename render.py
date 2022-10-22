@@ -6,8 +6,6 @@ from qrcode.constants import ERROR_CORRECT_L
 from io import BytesIO
 from base64 import b64encode, b64decode
 
-#CHOICES = ['Ⓐ', 'Ⓑ', 'Ⓒ', 'Ⓓ', 'Ⓔ', 'Ⓕ', 'Ⓖ', 'Ⓗ', 'Ⓘ', 'Ⓙ', 'Ⓚ', 'Ⓛ', 'Ⓜ', 
-#	'Ⓝ', 'Ⓞ', 'Ⓟ', 'Ⓠ', 'Ⓡ', 'Ⓢ', 'Ⓣ', 'Ⓤ', 'Ⓥ', 'Ⓦ', 'Ⓧ', 'Ⓨ', 'Ⓩ']
 # QR size: (4*5+17+2*2)*4
 qr = QRCode(version=1, error_correction=ERROR_CORRECT_L, box_size=4, border=2)
 qr.add_data('SAMPLE')
@@ -29,12 +27,3 @@ with open('./out/out.html', 'w', encoding='utf-8') as f:
 			qr=b64encode(output.read()).decode()
 		)
 	)
-'''
-pdfkit.from_file('./out/out.html', './out/out.pdf', 
-	verbose=True, options={
-		'no-outline': None, 
-		'encoding': 'UTF-8', 
-		'enable-local-file-access': None
-	}
-)
-'''

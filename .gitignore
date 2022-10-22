@@ -1,8 +1,10 @@
 __pycache__/
-*.db
-*.exe
 *.pyc
 *.pyo
+*.db
+*.exe
 *.csv
 *.pdf
 *.ps
+omr_*.*
+test*.*

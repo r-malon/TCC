@@ -18,7 +18,7 @@ def find_contours(img):
 	return None
 
 if __name__ == '__main__':
-	img = cv2.imread('out/gabarito_p.png')
+	img = cv2.imread('out/out.png')
 	result = img.copy()
 	gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 	blurred = cv2.GaussianBlur(gray, (3, 3), 0)
@@ -45,4 +45,4 @@ if __name__ == '__main__':
 	for i in circles[0, :]:
 		cv2.circle(blurred, (i[0], i[1]), i[2], (0, 255, 0), 2)
 	'''
-	cv2.imwrite('out/test.png', paper)
+	cv2.imwrite('out/test.png', morph)
