@@ -22,7 +22,7 @@ env = Environment(
 with open('./out/out.html', 'w', encoding='utf-8') as f:
 	f.write(
 		env.get_template('answer_sheet.html').render(
-			name='John Doe', n_choices=5, n_questions=30, enrollment=789456, 
+			name='John Doe', n_choices=5, n_questions=257, enrollment=789456, 
 			date=date.today().strftime('%A, %d/%m/%Y'), 
 			qr=b64encode(output.read()).decode()
 		)

@@ -1,7 +1,7 @@
 import sys, argparse
 '''
 parser = argparse.ArgumentParser(description='Corretor.')
-parser.add_argument('infile', help='Arquivo de entrada')
+parser.add_argument('infile', help='Path to input image')
 parser.add_argument('outfile', help='Arquivo de saída')
 parser.add_argument('-t', '--transparent', action='store_true', 
 	help='')

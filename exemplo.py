@@ -8,7 +8,7 @@ correct = ct = 0
 gb = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
 
 ct = 0
-image = cv2.imread('./out/gabarito.png')
+image = cv2.imread('./out/out.png')
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 blurred = cv2.GaussianBlur(gray, (3, 3), 0)
 edged = cv2.Canny(blurred, 20, 150)
@@ -47,9 +47,9 @@ if ct == 1:
 			ar = w / float(h)
 			approx = cv2.approxPolyDP(c, peri, True)
 			if (w <= size and h < size) and \
-				(ar >= 1.6 and ar <= 2.6) and \
-				(w > size/10 and h > size/10):
-				questionCnts.append(c) 
+			  (ar >= 1.6 and ar <= 2.6) and \
+			  (w > size/10 and h > size/10):
+				questionCnts.append(c)
 			print(len(questionCnts))
 
 x = y = cont = 0
@@ -92,3 +92,4 @@ cv2.imshow('Answer Sheet', paper)
 cv2.waitKey(0)
 cv2.imshow('real', image)
 cv2.waitKey(0)
+cv2.destroyAllWindows()

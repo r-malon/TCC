@@ -1,5 +1,6 @@
 from flask import *
 from models import *
+from datetime import date
 
 @app.before_first_request
 def first_run():
@@ -27,17 +28,29 @@ def teardown(error=None):
 		app.logger.error(error)
 
 
-@app.route('/<username>/<int:student_id>')
-def get_student(username, student_id):
-	return render_template()
+@app.route('/user/<int:user_id>')
+@app.route('/student/<int:user_id>')
+def get_user(user_id):
+	try:
+		query = Student.get(Student.enrollment == user_id)
+		return render_template()
+	except Exception as e:
+		flash('User not found')
+		return redirect('/home')
 
 @app.route('/top/<int:n>')
 def top_n(n):
+	query = Student.grades.desc().limit(n)
 	return render_template()
 
 @app.route('/<int:assessment_id>')
 def get_assessment(assessment_id):
 	return render_template()
+
+@app.route('/assessment')
+def build_assessment():
+	return render_template('answer_sheet.html', 
+		date=date.today().strftime('%A, %d/%m/%Y'))
 
 
 @app.errorhandler(404)

@@ -2,47 +2,61 @@
 
 import cv2
 import numpy
-import imutils
-from imutils.perspective import four_point_transform
-
+'''
 def find_circles(img):
 	return cv2.HoughCircles(img, 
 		cv2.HOUGH_GRADIENT, 1, 20, param1=50, 
 		param2=30, minRadius=1, maxRadius=22)
-
-def find_contours(img):
+'''
+def get_rects(img, slicer=slice(0, None), method=cv2.RETR_EXTERNAL):
 	contours, hierarchy = cv2.findContours(img, 
-		cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+		method, cv2.CHAIN_APPROX_SIMPLE)
 	if contours:
-		return sorted(contours, key=cv2.contourArea, reverse=True)
+		rects = []
+		contours = sorted(contours, key=cv2.contourArea, reverse=True)
+		for c in contours[slicer]:
+			peri = 0.001 * cv2.arcLength(c, True)
+			approx = cv2.approxPolyDP(c, peri, True)
+			if len(approx) == 4:
+				rects.append(approx)
+		return rects
 	return None
+
 
 if __name__ == '__main__':
 	img = cv2.imread('out/out.png')
 	result = img.copy()
 	gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-	blurred = cv2.GaussianBlur(gray, (3, 3), 0)
-	edged = cv2.Canny(blurred, 20, 150)
-	print(find_contours(blurred))
-	blurred = cv2.drawContours(blurred, find_contours(blurred), -1, (0, 255, 0))
+	blurred = cv2.GaussianBlur(gray, (7, 7), 0)
+	edged = cv2.Canny(blurred, 20, 3*20)
+	thresh = cv2.adaptiveThreshold(blurred, 255, 
+		cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 2)
+#	(n_questions - 21*3) // 24 + 3 + 1
+	outers = get_rects(thresh, slice(0, 12))
+#	mask = numpy.zeros(gray.shape, numpy.uint8)
+#	result = cv2.bitwise_and(gray, mask)
+#	cv2.drawContours(result, outers[:6], -1, (0, 255, 0))
+	cv2.drawContours(result, get_rects(thresh, slice(0, None)), -1, (255, 0, 0))
+	cv2.imwrite('out/test1.png', result)
+	for c in outers:
+		(x, y, w, h) = cv2.boundingRect(c)
+		# extent = float(cv2.contourArea(c))/(w*h)
+		box = thresh[y:y+h, x:x+w]
+		inners = get_rects(box, slice(0, None), cv2.RETR_TREE)
+		for v in inners:
+			(x, y, w, h) = cv2.boundingRect(v)
+			aspect_ratio = float(w)/h
+			if aspect_ratio > 3:
+				cv2.rectangle(result, (x, y), (x+w, y+h), (0, 255, 0), 1)
+			print(aspect_ratio)
+		#_, thresh = cv2.threshold(box, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+		# mask = cv2.bitwise_not(thresh)
+		#cv2.drawContours(result[y:y+h, x:x+w], inners, -1, (0, 255, 0))
+		cv2.imwrite('out/test.png', result)
+		break
 
-	for c in find_contours(blurred):
-		peri = 0.02 * cv2.arcLength(c, True)
-		approx = cv2.approxPolyDP(c, peri, True)
-		if len(approx) == 4:
-			docCnt = approx
-
-	thresh = cv2.inRange(img, (0, 0, 0), (255, 255, 255))
-	kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (22, 22))
-	morph = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel)
-	morph = cv2.morphologyEx(morph, cv2.MORPH_OPEN, kernel)
-	paper = four_point_transform(img, docCnt.reshape(4, 2))
-	warped = four_point_transform(gray, docCnt.reshape(4, 2))
-	width, height = int(paper.shape[0] // 2.95), int(paper.shape[0] // 11)
-	paper = paper[height:paper.shape[0], width:paper.shape[1]]
-	'''
-	circles = numpy.uint16(numpy.around(find_circles(blurred)))
-	for i in circles[0, :]:
-		cv2.circle(blurred, (i[0], i[1]), i[2], (0, 255, 0), 2)
-	'''
-	cv2.imwrite('out/test.png', morph)
+'''
+circles = numpy.uint16(numpy.around(find_circles(edged)))
+for i in circles[0, :]:
+	cv2.circle(result, (i[0], i[1]), i[2], (0, 255, 0), 2)
+'''
