@@ -49,6 +49,7 @@ def get_assessment(assessment_id):
 
 @app.route('/assessment')
 def build_assessment():
+	request.args.get()
 	return render_template('answer_sheet.html', 
 		date=date.today().strftime('%A, %d/%m/%Y'))
 
