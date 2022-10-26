@@ -78,7 +78,7 @@ for (q, i) in enumerate(np.arange(0, len(questionCnts), 5)):
 		if k == bubbled[0]:
 			color = (0, 255, 0)
 			correct += 1
-	for s in range (cont):
+	for s in range(cont):
 		cv2.drawContours(paper, [cnts[bubbled[s]]], -1, color, 3)
 
 res2 = []

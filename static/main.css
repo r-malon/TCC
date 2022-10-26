@@ -1,12 +1,11 @@
-/* wkhtmltopdf doesn't support CSS 3 */
+/* wkhtmltopdf, princexml etc. don't support CSS 3 */
 /*
 :root { --correct: #ffc0c0; --wrong: #c0ffc0; --canceled: #ffffc0; }
-.table { display: table; } 
+.table { display: table; }
 .table>* { display: table-row; }
 .table>*>* { display: table-cell; }
-@media screen and (orientation: portrait) {
-	table { width: 80%; }
-}
+@media screen and (orientation: portrait) { table { width: 80%; } }
+@import url("n_columns.css") print;
 */
 @counter-style circled-upper-latin {
 	system: fixed;
@@ -24,7 +23,7 @@
 	table {
 		display: block;
 		position: absolute; left: 50%; transform: translate(-50%, 0);
-		column-count: 3;
+		column-count: var(--n_columns);
 	}
 }
 * { font-family: sans-serif; }

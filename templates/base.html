@@ -5,7 +5,10 @@
 	<title>{% block title %}{% endblock %}</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" type="text/css" href="file:///C:/Projects/TCC/static/main.css">
+	<style type="text/css">
+		:root { --n_columns: {{ 1 if n_questions <= 21 else 2 if n_questions <= 42 else 3 }}; }
+	</style>
+	<link rel="stylesheet" type="text/css" href="../static/main.css">
 </head>
 {% endblock %}
 <body>

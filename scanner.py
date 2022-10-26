@@ -31,8 +31,7 @@ if __name__ == '__main__':
 	thresh = cv2.adaptiveThreshold(blurred, 255, 
 		cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 2)
 	edged = cv2.Canny(thresh, 20, 3*20)
-#	(n_questions - 21*3) // 24 + 3 + 1
-	outers = get_rects(edged, slice(0, 12))
+	outers = get_rects(edged, slice(0, 3))
 #	mask = numpy.zeros(gray.shape, numpy.uint8)
 #	result = cv2.bitwise_and(gray, mask)
 #	cv2.drawContours(result, outers[:6], -1, (0, 255, 0))
@@ -46,13 +45,13 @@ if __name__ == '__main__':
 		for v in inners:
 			(x, y, w, h) = cv2.boundingRect(v)
 			aspect_ratio = float(w)/h
-			if aspect_ratio != 1.0 and aspect_ratio < 1:
+			if aspect_ratio != 1.0 and aspect_ratio > 3:
 				cv2.rectangle(result, (x, y), (x+w, y+h), (0, 255, 0), 1)
-				cv2.imwrite(f'out/test_{roi_n}.png', box[y:y+h, x:x+w])
+				cv2.imwrite(f'out/test_{roi_n}.png', box[y:y+h, x:x+w][5:-5, 5:-5])
 				roi_n += 1
 		#_, thresh = cv2.threshold(box, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
 		# mask = cv2.bitwise_not(thresh)
-		#cv2.drawContours(result[y:y+h, x:x+w], inners, -1, (0, 255, 0))
+		# cv2.drawContours(result[y:y+h, x:x+w], inners, -1, (0, 255, 0))
 	cv2.imwrite('out/test.png', result)
 
 '''
