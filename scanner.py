@@ -8,6 +8,15 @@ def find_circles(img):
 		cv2.HOUGH_GRADIENT, 1, 20, param1=50, 
 		param2=30, minRadius=1, maxRadius=22)
 '''
+def crop(img, margin_x, margin_y):
+	return img[margin_y:-margin_y, margin_x:-margin_x]
+
+def cut(img, n_pieces, horizontal=False):
+	h, w = img.shape[:2]
+	size = h//n_pieces if horizontal else w//n_pieces
+	return [img[i*size:(i+1)*size, :] if horizontal 
+		else img[:, i*size:(i+1)*size] for i in range(n_pieces)]
+
 def get_rects(img, slicer=slice(0, None), method=cv2.RETR_EXTERNAL):
 	contours, hierarchy = cv2.findContours(img, 
 		method, cv2.CHAIN_APPROX_SIMPLE)
@@ -47,9 +56,12 @@ if __name__ == '__main__':
 			aspect_ratio = float(w)/h
 			if aspect_ratio != 1.0 and aspect_ratio > 3:
 				cv2.rectangle(result, (x, y), (x+w, y+h), (0, 255, 0), 1)
-				cv2.imwrite(f'out/test_{roi_n}.png', box[y:y+h, x:x+w][5:-5, 5:-5])
+				inner_box = crop(box[y:y+h, x:x+w], 5, 5)
+				opt_box = cut(inner_box, 5)
+				for i in range(5):
+					cv2.imwrite(f'out/test_{roi_n}_{i}.png', opt_box[i])
 				roi_n += 1
-		#_, thresh = cv2.threshold(box, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+		# _, thresh = cv2.threshold(box, 0, 255, cv2.THRESH_BINARY|cv2.THRESH_OTSU)
 		# mask = cv2.bitwise_not(thresh)
 		# cv2.drawContours(result[y:y+h, x:x+w], inners, -1, (0, 255, 0))
 	cv2.imwrite('out/test.png', result)
