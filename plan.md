@@ -20,4 +20,3 @@ fatalerrors.org/a/opencv-actual-case-answer-card-recognition-and-grading.html
 pyimagesearch.com/2016/10/03/bubble-sheet-multiple-choice-scanner-and-test-grader-using-omr-python-and-opencv/
 medium.com/swlh/roi-segmentation-contour-detection-and-image-thresholding-using-opencv-c0d2ea47b787
 medium.com/analytics-vidhya/opencv-findcontours-detailed-guide-692ee19eeb18
-github.com/henriqueheemann/avaliador-de-gabarito
