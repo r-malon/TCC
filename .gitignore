@@ -6,5 +6,8 @@ __pycache__/
 *.csv
 *.pdf
 *.ps
+*.png
+*.html
 omr_*.*
 test*.*
+scan.py

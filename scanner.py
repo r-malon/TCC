@@ -4,6 +4,9 @@ import cv2
 import numpy as np
 import string
 
+CORRECT_ANSWERS = [0,1,2,3,4,4,3,2,1,0]
+
+
 def crop(img, margin_x, margin_y):
 	return img[margin_y:-margin_y, margin_x:-margin_x]
 
@@ -40,9 +43,12 @@ def deduplicate(array):
 			uniques.append(arr)
 	return uniques
 
+
 if __name__ == '__main__':
 	img = cv2.imread('out/out.png')
 	result = img.copy()
+	QR_detector = cv2.QRCodeDetector()
+	qr_text, _, _ = QR_detector.detectAndDecode(img)
 	gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 	blurred = cv2.GaussianBlur(gray, (7, 7), 0)
 	thresh = cv2.adaptiveThreshold(blurred, 255, 
@@ -51,18 +57,15 @@ if __name__ == '__main__':
 		cv2.THRESH_BINARY_INV|cv2.THRESH_OTSU)
 	edged = cv2.Canny(thresh, 20, 3*20)
 	outers = get_rects(edged, slice(0, 3))
-#	mask = np.zeros(gray.shape, np.uint8)
-#	result = cv2.bitwise_and(gray, mask)
-#	cv2.drawContours(result, outers[:6], -1, (0, 255, 0))
 	answers = []
 	roi_n = 0
 	curr_question = 1
-	for c in deduplicate(outers):
+	for c in outers:
 		(x, y, w, h) = cv2.boundingRect(c)
 		# extent = float(cv2.contourArea(c)) / (w*h)
 		box = edged[y:y+h, x:x+w]
 		inners = get_rects(box, method=cv2.RETR_TREE)
-		for v in deduplicate(inners):
+		for v in inners:
 			(a, b, i, j) = cv2.boundingRect(v)
 			aspect_ratio = float(i)/j # w/h
 			if aspect_ratio != 1.0 and aspect_ratio > 3:
@@ -81,23 +84,20 @@ if __name__ == '__main__':
 					if white/(white+black) > 0.7:
 						answer = i
 						marked += 1
-						cv2.imwrite(f'out/test_{roi_n}_{i}.png', cropped_opt)
 				answers.insert(curr_question, answer)
 				roi_n += 1
 				curr_question += 1
-		# _, thresh = cv2.threshold(box, 0, 255, cv2.THRESH_BINARY|cv2.THRESH_OTSU)
-		# mask = cv2.bitwise_not(thresh)
-		# cv2.drawContours(result[y:y+h, x:x+w], inners, -1, (0, 255, 0))
-	cv2.imwrite('out/test.png', edged)
-	correct_answers = [0,1,2,3,4,4,3,2,1,0]
+
+	name, enrollment = qr_text.split('#')[1].split(';')
+	print(f'Aluno: {name}\nMatrícula: {enrollment}\n')
 	print('Gabarito')
 	print('\t'.join(
-		f'{i}.{string.ascii_uppercase[a]}' for i, a in enumerate(correct_answers)))
+		f'{i+1}.{string.ascii_uppercase[a]}' 
+		for i, a in enumerate(CORRECT_ANSWERS)))
 	print('Suas respostas')
 	print('\t'.join(
 		'-' if a < 0 else string.ascii_uppercase[a] for a in answers))
-	n_correct = sum(1 for a, b in zip(answers, correct_answers) if a == b)
-	n_incorrect = len(correct_answers) - n_correct
+	n_correct = sum(1 for a, b in zip(answers, CORRECT_ANSWERS) if a == b)
+	n_incorrect = len(CORRECT_ANSWERS) - n_correct
 	print(f'Acertos|Erros: {n_correct}|{n_incorrect}')
-	print(f'Nota: {(n_correct/len(correct_answers)):.0%}')
-	# count, correct = map(sum, zip(*((a > 3, a > 5) for a in answers)))
+	print(f'Nota: {(n_correct/len(CORRECT_ANSWERS)):.0%}')
